@@ -22,9 +22,6 @@ import struct
 ADJACENT_INTERVALS = 3 # generate 3 OTPs
 TIME_STEP = 30 # default as per TOTP spec
 
-# Use sudo when invoking ykchalresp
-USE_SUDO = True
-
 # supporting py2 and py3 sucks
 IS_PY3 = sys.version_info[0] == 3
 
@@ -95,11 +92,11 @@ def generate():
         print("OTP: %s" %( totp(secret, chal) ))
 
 
-def yubi():
+def yubi(use_sudo):
     for chal in generate_challenges():
         chal = binascii.hexlify(chal)
         cmd = []
-        if USE_SUDO:
+        if use_sudo:
             cmd = ['sudo']
         cmd.append('ykchalresp')
         cmd.append('-2x')
@@ -116,7 +113,7 @@ def yubi():
         print("OTP: %s" %(mangle_hash(binascii.unhexlify(resp))))
 
 def error():
-    print("Valid opts: --generate,  --yubi, or --convert-secret")
+    print("Valid opts: --generate, --yubi, --yubi-no-sudo, or --convert-secret")
 
 if __name__ == "__main__":
     if len(sys.argv) <= 1:
@@ -125,7 +122,9 @@ if __name__ == "__main__":
     if sys.argv[1] == "--generate":
         generate()
     elif sys.argv[1] == "--yubi":
-        yubi()
+        yubi(True)
+    elif sys.argv[1] == "--yubi-no-sudo":
+        yubi(False)
     elif sys.argv[1] == "--convert-secret":
         convert_secret()
     else:
