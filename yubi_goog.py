@@ -74,10 +74,11 @@ def get_secret():
     Read secret from user
     """
 
+    sys.stderr.write("Google key: ")
     if IS_PY3:
-        google_key = input("Google key: ")
+        google_key = input()
     else:
-        google_key = raw_input("Google key: ")
+        google_key = raw_input()
     return decode_secret(google_key)
 
 def convert_secret():
