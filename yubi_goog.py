@@ -83,7 +83,7 @@ def get_secret():
 
 def convert_secret():
     secret = get_secret()
-    print(secret.decode())
+    print(secret.decode().ljust(40, '0'))
 
 def generate():
     # convert secret to hex
