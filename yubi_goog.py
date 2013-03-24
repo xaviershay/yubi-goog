@@ -93,7 +93,7 @@ def generate():
 
 
 def yubi(use_sudo):
-    for chal in generate_challenges():
+    for chal in generate_challenges(0):
         chal = binascii.hexlify(chal)
         cmd = []
         if use_sudo:
@@ -110,7 +110,7 @@ def yubi(use_sudo):
                 raise ValueError("Command {0} returned {1!r}."
                                  .format(" ".join(cmd), out))
             resp = out.strip()
-        print("OTP: %s" %(mangle_hash(binascii.unhexlify(resp))))
+        print("%s" %(mangle_hash(binascii.unhexlify(resp))))
 
 def error():
     print("Valid opts: --generate, --yubi, --yubi-no-sudo, or --convert-secret")
